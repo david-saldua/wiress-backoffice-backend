@@ -12,9 +12,11 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersResponseDto } from './dto';
 import { plainToInstance } from 'class-transformer';
+import { Logger } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthService.name);
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
@@ -27,7 +29,11 @@ export class AuthController {
       const newUser = await this.authService.createUser(createUserDto);
       return plainToInstance(UsersResponseDto, newUser);
     } catch (error) {
-      console.error(error);
+      this.logger.error(
+        'An error occurred during user registration',
+        error.stack,
+      );
+
       throw new HttpException(
         'An error ocurred',
         HttpStatus.INTERNAL_SERVER_ERROR,
