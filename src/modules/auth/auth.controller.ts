@@ -10,7 +10,8 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UsersDocument } from './users.schema';
+import { UsersResponseDto } from './dto';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('auth')
 export class AuthController {
@@ -19,10 +20,12 @@ export class AuthController {
   @Post('register')
   @UsePipes(new ValidationPipe())
   @HttpCode(HttpStatus.CREATED)
-  async register(@Body() createUserDto: CreateUserDto): Promise<UsersDocument> {
+  async register(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<UsersResponseDto> {
     try {
       const newUser = await this.authService.createUser(createUserDto);
-      return newUser;
+      return plainToInstance(UsersResponseDto, newUser);
     } catch (error) {
       console.error(error);
       throw new HttpException(

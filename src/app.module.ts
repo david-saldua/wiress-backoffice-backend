@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { mongoDbURL } from './config/configuration';
 import { AuthModule } from './modules/auth/auth.module';
@@ -11,6 +10,6 @@ if (!mongoDbURL) {
 @Module({
   imports: [MongooseModule.forRoot(mongoDbURL), AuthModule],
   controllers: [],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}
