@@ -27,4 +27,10 @@ export function registerGlobals(app: INestApplication) {
   );
 }
 
+// TODO:
+/**
+ * 1. NestJs Passport authentication
+ *
+ */
+
 bootstrap();
